@@ -1,4 +1,5 @@
 body { padding: 0; margin: 0 }
+
 #unity-container { position: absolute }
 #unity-container { left: 50%; top: 50%; transform: translate(-50%, -50%) }
 #unity-canvas { background: #231F20 }
@@ -15,4 +16,9 @@ body { padding: 0; margin: 0 }
 #enterar:enabled { float: right; width: 38px; height: 38px; background-color: #1eaed3; display: inline-block; border: 0; }
 #entervr:disabled { float: right; width: 38px; height: 38px; background-color: #dddddd; display: inline-block; border: 0; }
 #enterar:disabled { float: right; width: 38px; height: 38px; background-color: #dddddd; display: inline-block; border: 0; }
-#skeletonRequest { float: right; width: 68px; height: 38px; background-color: #1eaed3; display: inline-block; border: 0; }
+#startcapture:enabled { float: right; width: 82px; height: 38px; background-color: #1eaed3; display: inline-block; border: 0; }
+#stopcapture:enabled { float: right; width: 82px; height: 38px; background-color: #1eaed3; display: inline-block; border: 0; }
+#stopcapture:disabled { float: right; width: 82px; height: 38px; background-color: #dddddd; display: inline-block; border: 0; }
+#startcapture:disabled { float: right; width: 82px; height: 38px; background-color: #dddddd; display: inline-block; border: 0; }
+#skeletonRequest { float: right; width: 128px; height: 38px; background-color: #1eaed3; display: inline-block; border: 0; }
+

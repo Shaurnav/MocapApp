@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | DePanther</title>
+    <title>Mocap App</title>
     <meta name="description" content="">
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
@@ -23,10 +23,13 @@
         <div id="unity-webgl-logo"></div>
         <button id="entervr" value="Enter VR" disabled>VR</button>
         <button id="enterar" value="Enter AR" disabled>AR</button>
-        <button id="skeletonRequest" value="Get Skeleton">Get Skeleton</button>
+        
         <div id="unity-webxr-link">Using <a href="https://github.com/De-Panther/unity-webxr-export" target="_blank" title="WebXR Export">WebXR Export</a></div>
-        <div id="unity-build-title">DePanther</div>
-      </div>
+        <button id="stopcapture" value="Stop Capture" disabled>Stop Capture</button>
+        <button id="startcapture" value="Start Capture">Start Capture</button>
+        <button id="skeletonRequest" value="Log Skeleton Data">Log Skeleton Data</button>
+  
+      </div>      
     </div>
     <script>
       var buildUrl = "Build";
@@ -110,7 +113,10 @@
       };
       document.body.appendChild(script);
 
-      let mocapButton = document.getElementById('skeletonRequest');
+      let skeletonButton = document.getElementById('skeletonRequest');
+      let startCaptureButton = document.getElementById('startcapture');
+      let stopCaptureButton = document.getElementById('stopcapture');
+      let capturing = false;
 
       let enterARButton = document.getElementById('enterar');
       let enterVRButton = document.getElementById('entervr');
@@ -129,9 +135,23 @@
         unityInstance.Module.WebXR.toggleVR();
       }, false);
 
-      mocapButton.addEventListener('click', function (event) {
+      skeletonButton.addEventListener('click', function (event) {
         skeletonSocket.send('send_data'); //note that this can send data!!
       }, false);
+
+      stopCaptureButton.addEventListener('click', function (event) {
+        capturing = false;
+        stopCaptureButton.disabled = !capturing;
+        startCaptureButton.disabled = capturing;
+
+      }, false);
+
+      startCaptureButton.addEventListener('click', function (event) {
+        capturing = true;
+        startCaptureButton.disabled = capturing;
+        stopCaptureButton.disabled = !capturing;
+      }, false);
+
     </script>
   </body>
 </html>
