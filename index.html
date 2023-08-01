@@ -54,11 +54,15 @@
       
       var s = null;
       var skeletonSocket = null;
-      
+      var skeletonDataTimeout =  null;
 
       canvasContainer.style.width = "960px";
       canvasContainer.style.height = "600px";
       loadingBar.style.display = "block";
+
+      function socketRequestCallback(requestString, socket) {
+        socket.send(requestString);
+      }
 
       function mocapConnect(unityInstance) {
         // Capture socket
@@ -81,7 +85,7 @@
         const skeletonSocketOnMessage = event => {
           var eventDataString = "" + event.data;
           
-          unityInstance.SendMessage("Skeleton Data", "SetText", eventDataString);
+          unityInstance.SendMessage("Skeleton Data", "SetText", eventDataString); //note
         };
         
         skeletonSocket.addEventListener("message", skeletonSocketOnMessage);
@@ -89,6 +93,8 @@
         skeletonSocket.onopen = function(event) {
           console.log("Skeleton socket connected");
         };
+        
+        skeletonDataTimeout = setInterval(socketRequestCallback, 0,  "send_data", skeletonSocket);
       }
       
       var script = document.createElement("script");
@@ -144,12 +150,15 @@
         stopCaptureButton.disabled = !capturing;
         startCaptureButton.disabled = capturing;
 
+        s.send("stop_capture");
       }, false);
 
       startCaptureButton.addEventListener('click', function (event) {
         capturing = true;
         startCaptureButton.disabled = capturing;
         stopCaptureButton.disabled = !capturing;
+
+        s.send("start_capture");
       }, false);
 
     </script>
