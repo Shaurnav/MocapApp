@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | WebXRSupport</title>
+    <title>Unity WebGL Player | DePanther</title>
     <meta name="description" content="">
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
@@ -23,21 +23,22 @@
         <div id="unity-webgl-logo"></div>
         <button id="entervr" value="Enter VR" disabled>VR</button>
         <button id="enterar" value="Enter AR" disabled>AR</button>
+        <button id="skeletonRequest" value="Get Skeleton">Get Skeleton</button>
         <div id="unity-webxr-link">Using <a href="https://github.com/De-Panther/unity-webxr-export" target="_blank" title="WebXR Export">WebXR Export</a></div>
-        <div id="unity-build-title">WebXRSupport</div>
+        <div id="unity-build-title">DePanther</div>
       </div>
     </div>
     <script>
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/MocapApp.loader.js";
+      var loaderUrl = buildUrl + "/web3.loader.js";
       var config = {
-        dataUrl: buildUrl + "/MocapApp.data",
-        frameworkUrl: buildUrl + "/MocapApp.framework.js",
-        codeUrl: buildUrl + "/MocapApp.wasm",
+        dataUrl: buildUrl + "/web3.data",
+        frameworkUrl: buildUrl + "/web3.framework.js",
+        codeUrl: buildUrl + "/web3.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
-        productName: "WebXRSupport",
-        productVersion: "0.1.0",
+        productName: "DePanther",
+        productVersion: "0.1",
       };
 
       var container = document.querySelector("#unity-container");
@@ -48,11 +49,45 @@
       var fullscreenButton = document.querySelector("#unity-fullscreen-button");
       var unityInstance = null;
       
+      var s = null;
+      var skeletonSocket = null;
+      
 
       canvasContainer.style.width = "960px";
       canvasContainer.style.height = "600px";
       loadingBar.style.display = "block";
 
+      function mocapConnect(unityInstance) {
+        // Capture socket
+        const ipAddr = "172.24.68.152";
+        const port = "52801";
+        s = new WebSocket("ws://" + ipAddr + ":" + port);
+
+        console.log("we've created our web socket for first port");
+
+        s.onmessage = function(event) {
+          console.log(event.data);
+        };
+
+        // Skeleton socket
+        const skeletonPort = parseInt(port) + 1;
+        skeletonSocket = new WebSocket("ws://" + ipAddr + ":" + skeletonPort);
+        
+        console.log("we've created our web socket for second port");
+
+        const skeletonSocketOnMessage = event => {
+          var eventDataString = "" + event.data;
+          
+          unityInstance.SendMessage("Skeleton Data", "SetText", eventDataString);
+        };
+        
+        skeletonSocket.addEventListener("message", skeletonSocketOnMessage);
+
+        skeletonSocket.onopen = function(event) {
+          console.log("Skeleton socket connected");
+        };
+      }
+      
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
@@ -67,11 +102,15 @@
               unityInstance.SetFullscreen(1);
             };
           }
+
+          mocapConnect(unityInstance);
         }).catch((message) => {
           alert(message);
         });
       };
       document.body.appendChild(script);
+
+      let mocapButton = document.getElementById('skeletonRequest');
 
       let enterARButton = document.getElementById('enterar');
       let enterVRButton = document.getElementById('entervr');
@@ -88,6 +127,10 @@
       }, false);
       enterVRButton.addEventListener('click', function (event) {
         unityInstance.Module.WebXR.toggleVR();
+      }, false);
+
+      mocapButton.addEventListener('click', function (event) {
+        skeletonSocket.send('send_data'); //note that this can send data!!
       }, false);
     </script>
   </body>
