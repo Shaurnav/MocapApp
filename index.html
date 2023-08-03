@@ -6,7 +6,7 @@
     <title>Mocap App</title>
     <meta name="description" content="">
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
+    <link rel="stylesheet" href="Style/style.css">
   </head>
   <body>
     <div id="unity-container">
@@ -24,7 +24,6 @@
         <button id="entervr" value="Enter VR" disabled>VR</button>
         <button id="enterar" value="Enter AR" disabled>AR</button>
         
-        <div id="unity-webxr-link">Using <a href="https://github.com/De-Panther/unity-webxr-export" target="_blank" title="WebXR Export">WebXR Export</a></div>
         <button id="stopcapture" value="Stop Capture" disabled>Stop Capture</button>
         <button id="startcapture" value="Start Capture">Start Capture</button>
         <button id="skeletonRequest" value="Log Skeleton Data">Log Skeleton Data</button>
@@ -32,12 +31,12 @@
       </div>      
     </div>
     <script>
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/web3.loader.js";
+      var buildUrl = "UnityBuild/Build";
+      var loaderUrl = buildUrl + "/UnityBuild.loader.js";
       var config = {
-        dataUrl: buildUrl + "/web3.data",
-        frameworkUrl: buildUrl + "/web3.framework.js",
-        codeUrl: buildUrl + "/web3.wasm",
+        dataUrl: buildUrl + "/UnityBuild.data",
+        frameworkUrl: buildUrl + "/UnityBuild.framework.js",
+        codeUrl: buildUrl + "/UnityBuild.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "DePanther",
