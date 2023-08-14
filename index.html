@@ -92,8 +92,10 @@
         skeletonSocket.onopen = function(event) {
           console.log("Skeleton socket connected");
         };
-        
-        skeletonDataTimeout = setInterval(socketRequestCallback, 0,  "send_data", skeletonSocket);
+
+        if (skeletonSocket.readyState == WebSocket.OPEN) {
+          skeletonDataTimeout = setInterval(socketRequestCallback, 0,  "send_data", skeletonSocket);
+        }
       }
       
       var script = document.createElement("script");
