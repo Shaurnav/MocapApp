@@ -83,7 +83,7 @@
 
         const skeletonSocketOnMessage = event => {
           var eventDataString = "" + event.data;
-          
+          // console.log(eventDataString);
           unityInstance.SendMessage("Skeleton Data", "SetText", eventDataString); //note
         };
         
@@ -94,7 +94,7 @@
         };
 
 
-        skeletonDataTimeout = setInterval(socketRequestCallback, 0,  "send_data", skeletonSocket);
+        skeletonDataTimeout = setInterval(socketRequestCallback, 20,  "send_data", skeletonSocket);
       }
       
       var script = document.createElement("script");
