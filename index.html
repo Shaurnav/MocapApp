@@ -69,7 +69,9 @@
         const port = "52801";
         s = new WebSocket("ws://" + ipAddr + ":" + port);
 
-        console.log("we've created our web socket for first port");
+        s.onopen = event => {
+          console.log("Control socket connected");
+        };
 
         s.onmessage = function(event) {
           console.log(event.data);
@@ -78,8 +80,7 @@
         // Skeleton socket
         const skeletonPort = parseInt(port) + 1;
         skeletonSocket = new WebSocket("ws://" + ipAddr + ":" + skeletonPort);
-        
-        console.log("we've created our web socket for second port");
+               
 
         const skeletonSocketOnMessage = event => {
           var eventDataString = "" + event.data;
