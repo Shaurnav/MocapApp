@@ -20,7 +20,6 @@
         </div>
       </div>
       <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
         <button id="entervr" value="Enter VR" disabled>VR</button>
         <button id="enterar" value="Enter AR" disabled>AR</button>
         
@@ -54,6 +53,7 @@
       var s = null;
       var skeletonSocket = null;
       var skeletonDataTimeout =  null;
+      var logSkeletonSwitch = false;
 
       canvasContainer.style.width = "960px";
       canvasContainer.style.height = "600px";
@@ -84,8 +84,10 @@
 
         const skeletonSocketOnMessage = event => {
           var eventDataString = "" + event.data;
-          // console.log(eventDataString);
-          unityInstance.SendMessage("Skeleton Data", "SetText", eventDataString); //note
+          if (logSkeletonSwitch) {
+            console.log(eventDataString);
+          }
+          unityInstance.SendMessage("Skeleton Data", "SetText", eventDataString);
         };
         
         skeletonSocket.addEventListener("message", skeletonSocketOnMessage);
@@ -93,7 +95,6 @@
         skeletonSocket.onopen = function(event) {
           console.log("Skeleton socket connected");
         };
-
 
         skeletonDataTimeout = setInterval(socketRequestCallback, 20,  "send_data", skeletonSocket);
       }
@@ -143,7 +144,10 @@
       }, false);
 
       skeletonButton.addEventListener('click', function (event) {
+        console.log('click registered');
+        logSkeletonSwitch = true;
         skeletonSocket.send('send_data'); //note that this can send data!!
+        logSkeletonSwitch = false;
       }, false);
 
       stopCaptureButton.addEventListener('click', function (event) {
