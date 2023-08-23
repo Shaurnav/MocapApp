@@ -3109,13 +3109,13 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  3251332: function() {Module['emscripten_get_now_backup'] = performance.now;},  
- 3251387: function($0) {performance.now = function() { return $0; };},  
- 3251435: function($0) {performance.now = function() { return $0; };},  
- 3251483: function() {performance.now = Module['emscripten_get_now_backup'];},  
- 3251538: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
- 3251599: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
- 3251663: function() {return Module.webglContextAttributes.powerPreference;}
+  3251396: function() {Module['emscripten_get_now_backup'] = performance.now;},  
+ 3251451: function($0) {performance.now = function() { return $0; };},  
+ 3251499: function($0) {performance.now = function() { return $0; };},  
+ 3251547: function() {performance.now = Module['emscripten_get_now_backup'];},  
+ 3251602: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
+ 3251663: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
+ 3251727: function() {return Module.webglContextAttributes.powerPreference;}
 };
 
 
@@ -3261,6 +3261,14 @@ var ASM_CONSTS = {
       var js = jsStackTrace();
       if (Module['extraStackTrace']) js += '\n' + Module['extraStackTrace']();
       return demangleAll(js);
+    }
+
+  function _ControlSocketSender(requestText) {
+      if (window.sendControlSignal) {
+        window.sendControlSignal(UTF8ToString(requestText));
+      } else {
+        window.alert("something has gone wrong here...");
+      }
     }
 
   function _ControllerPulse(controller, intensity, duration) {
@@ -16296,6 +16304,7 @@ function checkIncomingModuleAPI() {
   ignoredModuleProp('fetchSettings');
 }
 var asmLibraryArg = {
+  "ControlSocketSender": _ControlSocketSender,
   "ControllerPulse": _ControllerPulse,
   "GetJSMemoryInfo": _GetJSMemoryInfo,
   "InitControllersArray": _InitControllersArray,

@@ -58,7 +58,7 @@
       canvasContainer.style.width = "960px";
       canvasContainer.style.height = "600px";
       loadingBar.style.display = "block";
-
+ 
       function socketRequestCallback(requestString, socket) {
         socket.send(requestString);
       }
@@ -71,6 +71,12 @@
 
         s.onopen = event => {
           console.log("Control socket connected");
+          
+          window.sendControlSignal = function (requestString) {
+            console.log(s);
+            console.log(requestString);
+            //s.send(requestString);
+          }
         };
 
         s.onmessage = function(event) {
@@ -81,12 +87,9 @@
         const skeletonPort = parseInt(port) + 1;
         skeletonSocket = new WebSocket("ws://" + ipAddr + ":" + skeletonPort);
                
-
         const skeletonSocketOnMessage = event => {
           var eventDataString = "" + event.data;
-          if (logSkeletonSwitch) {
-            console.log(eventDataString);
-          }
+          // console.log(eventDataString);
           unityInstance.SendMessage("Skeleton Data", "SetText", eventDataString);
         };
         
@@ -144,10 +147,7 @@
       }, false);
 
       skeletonButton.addEventListener('click', function (event) {
-        console.log('click registered');
-        logSkeletonSwitch = true;
         skeletonSocket.send('send_data'); //note that this can send data!!
-        logSkeletonSwitch = false;
       }, false);
 
       stopCaptureButton.addEventListener('click', function (event) {
