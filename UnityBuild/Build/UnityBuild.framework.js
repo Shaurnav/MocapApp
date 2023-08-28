@@ -3109,13 +3109,13 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  3251396: function() {Module['emscripten_get_now_backup'] = performance.now;},  
- 3251451: function($0) {performance.now = function() { return $0; };},  
- 3251499: function($0) {performance.now = function() { return $0; };},  
- 3251547: function() {performance.now = Module['emscripten_get_now_backup'];},  
- 3251602: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
- 3251663: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
- 3251727: function() {return Module.webglContextAttributes.powerPreference;}
+  3251588: function() {Module['emscripten_get_now_backup'] = performance.now;},  
+ 3251643: function($0) {performance.now = function() { return $0; };},  
+ 3251691: function($0) {performance.now = function() { return $0; };},  
+ 3251739: function() {performance.now = Module['emscripten_get_now_backup'];},  
+ 3251794: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
+ 3251855: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
+ 3251919: function() {return Module.webglContextAttributes.powerPreference;}
 };
 
 
@@ -3267,7 +3267,7 @@ var ASM_CONSTS = {
       if (window.sendControlSignal) {
         window.sendControlSignal(UTF8ToString(requestText));
       } else {
-        window.alert("something has gone wrong here...");
+        window.alert("Unity socket event misfired");
       }
     }
 

@@ -42,6 +42,10 @@
         productVersion: "0.1",
       };
 
+      let startCaptureButton = document.getElementById('startcapture');
+      let stopCaptureButton = document.getElementById('stopcapture');
+      let capturing = false;
+
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
       var canvasContainer = document.querySelector("#unity-canvas-container");
@@ -54,6 +58,7 @@
       var skeletonSocket = null;
       var skeletonDataTimeout =  null;
       var logSkeletonSwitch = false;
+      var singleFrameRun = false;
 
       canvasContainer.style.width = "960px";
       canvasContainer.style.height = "600px";
@@ -73,9 +78,24 @@
           console.log("Control socket connected");
           
           window.sendControlSignal = function (requestString) {
-            console.log(s);
+            if (requestString == "stop_capture" && !capturing) {
+              return;
+            }
+
+            if (requestString == "start_capture") {
+              capturing = true;
+              startCaptureButton.disabled = true; 
+              stopCaptureButton.disabled = false;
+            }
+
+            if (requestString == "stop_capture") {
+              capturing = false;
+              startCaptureButton.disabled = false;
+              stopCaptureButton.disabled = true;
+            }
+
             console.log(requestString);
-            //s.send(requestString);
+            s.send(requestString);
           }
         };
 
@@ -90,7 +110,10 @@
         const skeletonSocketOnMessage = event => {
           var eventDataString = "" + event.data;
           // console.log(eventDataString);
-          unityInstance.SendMessage("Skeleton Data", "SetText", eventDataString);
+          if (!singleFrameRun) { //not sure if this is a breaking change...
+            unityInstance.SendMessage("Skeleton Data", "processMessage", eventDataString);
+          }
+          
         };
         
         skeletonSocket.addEventListener("message", skeletonSocketOnMessage);
@@ -125,9 +148,6 @@
       document.body.appendChild(script);
 
       let skeletonButton = document.getElementById('skeletonRequest');
-      let startCaptureButton = document.getElementById('startcapture');
-      let stopCaptureButton = document.getElementById('stopcapture');
-      let capturing = false;
 
       let enterARButton = document.getElementById('enterar');
       let enterVRButton = document.getElementById('entervr');
