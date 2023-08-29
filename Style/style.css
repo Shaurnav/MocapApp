@@ -175,3 +175,27 @@ body { padding: 0; margin: 0 }
   border-radius: 5px;
  }
 
+ #singleFrameToggle:enabled { 
+  float: right; 
+  width: 82px; 
+  height: 38px; 
+  background-color: #1eaed3; 
+  display: inline-block; 
+  border: 0; 
+  margin: 5px 10px;
+  border-radius: 5px;  
+}
+
+ #singleFrameToggle:disabled {
+  float: right; 
+  width: 82px; 
+  height: 38px; 
+  background-color: #dddddd; 
+  display: inline-block; 
+  border: 0;
+  margin: 5px 10px;
+  border-radius: 5px; 
+ }
+
+
+

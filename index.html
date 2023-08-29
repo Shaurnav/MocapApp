@@ -26,7 +26,7 @@
         <button id="stopcapture" value="Stop Capture" disabled>Stop Capture</button>
         <button id="startcapture" value="Start Capture">Start Capture</button>
         <button id="skeletonRequest" value="Log Skeleton Data">Log Skeleton Data</button>
-  
+        <button id="singleFrameToggle" value="Single Frame Toggle For Skeleton Render">Single Frame</button>
       </div>      
     </div>
     <script>
@@ -58,14 +58,16 @@
       var skeletonSocket = null;
       var skeletonDataTimeout =  null;
       var logSkeletonSwitch = false;
-      var singleFrameRun = false;
+      var singleFrameRun = true;
 
       canvasContainer.style.width = "960px";
       canvasContainer.style.height = "600px";
       loadingBar.style.display = "block";
  
       function socketRequestCallback(requestString, socket) {
-        socket.send(requestString);
+        if (!singleFrameRun) {
+          socket.send(requestString);
+        }
       }
 
       function mocapConnect(unityInstance) {
@@ -109,8 +111,9 @@
                
         const skeletonSocketOnMessage = event => {
           var eventDataString = "" + event.data;
-          // console.log(eventDataString);
+          
           if (!singleFrameRun) { //not sure if this is a breaking change...
+            console.log(eventDataString);
             unityInstance.SendMessage("Skeleton Data", "processMessage", eventDataString);
           }
           
@@ -148,6 +151,7 @@
       document.body.appendChild(script);
 
       let skeletonButton = document.getElementById('skeletonRequest');
+      let singleFrameToggleButton = document.getElementById('singleFrameToggle');
 
       let enterARButton = document.getElementById('enterar');
       let enterVRButton = document.getElementById('entervr');
@@ -185,6 +189,11 @@
 
         s.send("start_capture");
       }, false);
+
+      singleFrameToggleButton.addEventListener('click', function (event) {
+        singleFrameToggleButton.disabled = !singleFrameRun
+        singleFrameRun = !singleFrameRun;
+      })
 
     </script>
   </body>
