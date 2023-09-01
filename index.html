@@ -58,7 +58,7 @@
       var skeletonSocket = null;
       var skeletonDataTimeout =  null;
       var logSkeletonSwitch = false;
-      var singleFrameRun = true;
+      var singleFrameRun = false;
 
       canvasContainer.style.width = "960px";
       canvasContainer.style.height = "600px";
@@ -193,7 +193,7 @@
       singleFrameToggleButton.addEventListener('click', function (event) {
         singleFrameToggleButton.disabled = !singleFrameRun
         singleFrameRun = !singleFrameRun;
-      })
+      }, false);
 
     </script>
   </body>
